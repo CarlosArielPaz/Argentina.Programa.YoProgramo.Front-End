@@ -1,0 +1,26 @@
+div {
+  background-color: tomato;
+}
+
+div > div {
+  background-color: #999;
+}
+
+.bi {
+    padding-right: 1rem;
+    color: #fff;
+    font-size: 3rem;
+    transition: all .5s;
+}
+
+.bi:hover {
+  color: #0f0;
+}
+
+.bi-state-active {
+  color: #0f0;
+}
+
+.bi-state-inactive {
+  color: #fff;
+}

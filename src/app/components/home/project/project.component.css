@@ -1,0 +1,73 @@
+.container {
+    position: relative;
+    margin-top: 2rem;
+  }
+  
+  .container h1 {
+    color: cornflowerblue;
+  }
+  .container h1 .bi {
+    padding-right: 1rem;
+  }
+  
+  .container .card-body .bi {
+    padding-right: 0.75rem;
+    font-size: 1.75rem;
+    color: cornflowerblue;
+    vertical-align: middle;
+  }
+
+  .card {
+    height: auto;
+    box-shadow: 0 2px 5px #ccc;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 100%;
+    max-height: 250px;
+    object-fit: cover;
+  }
+  
+  .btn-create {
+    position: absolute;
+    top: 0rem;
+    right: 1.5rem;
+    padding: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    box-shadow: 0 2px 5px #999;
+    font-size: 1.25em;
+    border-radius: 50%;
+  }
+  
+  .btn-edit {
+    position: absolute;
+    top: 0.5rem;
+    right: 3.5rem;
+    padding: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    box-shadow: 0 2px 5px #999;
+    font-size: 1em;
+    border-radius: 50%;
+  }
+  
+  .btn-delete {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    box-shadow: 0 2px 5px #999;
+    font-size: 1em;
+    border-radius: 50%;
+  }
+  
+  @media (min-width: 576px) {
+    .btn-create {
+      right: 0.5rem;
+    }
+  }
+  

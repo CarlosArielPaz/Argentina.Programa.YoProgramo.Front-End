@@ -1,0 +1,70 @@
+<!-- Modal -->
+<div class="modal fade" id="modalForm_Skill" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="formLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="formLabel">{{modeTitle}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="modalForm_Skill-title" class="form-label text-primary">Título de la habilidad</label>
+            <input type="text" required class="form-control" id="modalForm_Skill-title" aria-describedby="modalForm_Skill-titleHelp" placeholder="Título..." maxlength="50" value="{{skill.title}}">
+            <div id="modalForm_Skill-titleHelp" class="form-text">Título de la habilidad.</div>
+          </div>
+          <div class="mb-3">
+            <label for="modalForm_Skill-percentage" class="form-label text-primary">Porcentaje alcanzado</label>
+            <input type="number" required class="form-control" id="modalForm_Skill-percentage" aria-describedby="modalForm_Skill-percentageHelp" placeholder="Periodo..." min="0" max="100" value="{{skill.percentage}}">
+            <div id="modalForm_Skill-percentageHelp" class="form-text">Porcentaje alcanzado (0 a 100%).</div>
+          </div>
+          <div class="mb-3">
+            <label for="modalForm_Skill-image" class="form-label text-primary">Imagen</label>
+            <input type="url" required class="form-control" id="modalForm_Skill-image" aria-describedby="modalForm_Skill-imageHelp" placeholder="https://..." maxlength="255" value="{{skill.image}}">
+            <div id="modalForm_Skill-imageHelp" class="form-text">Ingresa la URL de una imagen representativa de la experiencia.</div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <!-- <button *ngIf="modeCreate" type="button" class="btn btn-primary" (click)="onCreate()">{{modeButton}}</button> -->
+        <button *ngIf="modeCreate" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onCreate()">{{modeButton}}</button>
+        <button *ngIf="modeUpdate" type="button" class="btn btn-primary" (click)="onUpdate(0)">{{modeButton}}</button>
+        <button *ngIf="modeDelete" type="button" class="btn btn-primary" (click)="onDelete(0)">{{modeButton}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UI -->
+<div class="container px-sm-0">  
+  <h1><i class="bi bi-bookmark-check"></i>Habilidad blanda/dura</h1>
+  <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="create" index="0"><i class="bi bi-plus-lg"></i></button>
+  <div class="m-4 d-flex flex-column align-items-center flex-sm-row justify-content-sm-around flex-sm-wrap gap-4">
+    <div *ngFor="let skill of list" class="circle">
+      <circle-progress
+      [percent]="skill.percentage"
+      [maxPercent]="100"
+      [radius]="100"
+      [outerStrokeWidth]="16"
+      [innerStrokeWidth]="8"
+      [outerStrokeColor]="'#78C000'"
+      [innerStrokeColor]="'#C7E596'"
+      [animation]="true"
+      [animationDuration]="500"
+      [showTitle]="false"
+      [showSubtitle]="false"
+      [showUnits]="false"
+      [showImage]="true"
+      [imageSrc]="skill.image"
+      [imageWidth]="90"
+      [imageHeight]="90"
+      ></circle-progress>
+      <!-- <h4 class="text-center">{{skill.title}}&nbsp;&nbsp;⇢&nbsp;&nbsp;{{skill.percentage}}%</h4> -->
+      <h4 class="text-center">{{skill.title}}</h4>
+      <h5 class="text-center circle-percentage">{{skill.percentage}}%</h5>
+        <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="update" index="0"><i class="bi bi-pencil-fill"></i></button>
+        <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-delete" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="delete" index="0"><i class="bi bi-trash3"></i></button>
+      </div>
+  </div>
+</div>
