@@ -9,8 +9,6 @@ import { Education } from 'src/app/model/education/education.model';
   styleUrls: ['./education.component.css'],
 })
 export class EducationComponent implements OnInit {
-  private dialog = new AppComponent();
-
   public isLogged: boolean = true;
 
   public list: Education[] = [];
@@ -33,9 +31,10 @@ export class EducationComponent implements OnInit {
       const mode: string = String(button.getAttribute('mode'));
       const index: number = Number(button.getAttribute('index'));
 
+      // Mode (create)
       if (mode === "create") {
-        this.modeTitle = "Creación de Educación";
-        this.modeButton= "Crear Educación";   
+        this.modeTitle = "Crear Educación";
+        this.modeButton= "Crear";   
         this.modeCreate = true;
         this.modeUpdate = false;
         this.modeDelete = false;
@@ -43,9 +42,10 @@ export class EducationComponent implements OnInit {
         this.education = new Education(0, '', '', '', '', '');
       } 
 
+      // Mode (update)
       if (mode === "update") {
-        this.modeTitle = "Edición de Educación";
-        this.modeButton= "Actualizar Educación";         
+        this.modeTitle = "Editar Educación";
+        this.modeButton= "Actualizar";         
         this.modeCreate = false;
         this.modeUpdate = true;
         this.modeDelete = false;
@@ -53,9 +53,10 @@ export class EducationComponent implements OnInit {
         this.education = this.list[index];
       }
       
+      // Mode (delete)
       if (mode === "delete") {
-        this.modeTitle = "Borrado de Educación";
-        this.modeButton= "Borrar Educación";
+        this.modeTitle = "Borrar Educación";
+        this.modeButton= "Borrar";
         this.modeCreate = false;
         this.modeUpdate = false;
         this.modeDelete = true;
@@ -80,49 +81,50 @@ export class EducationComponent implements OnInit {
 
     // Service (create)
     this.educationService.create(this.education).subscribe((data) => {      
-      // Dialog
-      
-      this.dialog.onDialog( {title: "AAA", description: "ZZZ"} );
-      //this.dialog.modal.description = "Creación de experiencia confirmada...";
-      //AppComponent.modal.description = "Creación de experiencia confirmada...";
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
 
       // Service (list)
       this.educationService.list().subscribe((data) => {
         this.list = data;
       });
     }, (err) => {
-      // Dialog
-      //AppComponent.modal.description = `¡ERROR!... ${err.message}`;
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });    
   }
 
-  onUpdate(index: number):void {
+  onUpdate():void {
     // Education (update)
-    this.list[index].institute = (<HTMLInputElement>document.getElementById('modalForm_Education-institute')).value;
-    this.list[index].title = (<HTMLInputElement>document.getElementById('modalForm_Education-title')).value;
-    this.list[index].description = (<HTMLInputElement>document.getElementById('modalForm_Education-description')).value;
-    this.list[index].period = (<HTMLInputElement>document.getElementById('modalForm_Education-period')).value;
-    this.list[index].image = (<HTMLInputElement>document.getElementById('modalForm_Education-image')).value;
+    this.education.institute = (<HTMLInputElement>document.getElementById('modalForm_Education-institute')).value;
+    this.education.title = (<HTMLInputElement>document.getElementById('modalForm_Education-title')).value;
+    this.education.description = (<HTMLInputElement>document.getElementById('modalForm_Education-description')).value;
+    this.education.period = (<HTMLInputElement>document.getElementById('modalForm_Education-period')).value;
+    this.education.image = (<HTMLInputElement>document.getElementById('modalForm_Education-image')).value;
 
     // Service (update)
-    this.educationService.update(this.list[index]).subscribe((data) => {
-      console.log(`OK onUpdate!: ${data}`);
+    this.educationService.update(this.education).subscribe((data) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
     }, (err) => {
-      console.log(`ERROR onUpdate!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 
-  onDelete(index: number):void {
+  onDelete():void {
     // Service (delete)
-    this.educationService.delete(this.list[index].id).subscribe((data) => {
-      console.log(`OK onDelete!: ${data}`);
+    this.educationService.delete(this.education.id).subscribe((data) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
 
       // Service (list)
       this.educationService.list().subscribe((data) => {
         this.list = data;
       });
     }, (err) => {
-      console.log(`ERROR onDelete!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 }

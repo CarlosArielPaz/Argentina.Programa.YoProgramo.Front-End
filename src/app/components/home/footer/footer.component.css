@@ -1,14 +1,10 @@
 .container-fluid {
-  background-color: #eee;
-  box-shadow: 0 -2px 5px #ccc;
-}
-
-div > div {
-  background-color: #eee;
+  margin-top: 3rem;
+  padding: 2rem 0;
+  border-top: 10px solid #f7f7f7;
 }
 
 div > div > div {
-  background-color: #eee;
   color: #424242;
   font-size: 1.25em;
 }

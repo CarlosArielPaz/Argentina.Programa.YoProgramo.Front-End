@@ -9,8 +9,6 @@ import { Project } from 'src/app/model/project/project.model';
   styleUrls: ['./project.component.css'],
 })
 export class ProjectComponent implements OnInit {
-  private dialog = new AppComponent();
-
   public isLogged: boolean = true;
 
   public list: Project[] = [];
@@ -33,9 +31,10 @@ export class ProjectComponent implements OnInit {
       const mode: string = String(button.getAttribute('mode'));
       const index: number = Number(button.getAttribute('index'));
 
+      // Mode (create)
       if (mode === "create") {
-        this.modeTitle = "Creación de Proyecto";
-        this.modeButton= "Crear Proyecto";   
+        this.modeTitle = "Crear Proyecto";
+        this.modeButton= "Crear";   
         this.modeCreate = true;
         this.modeUpdate = false;
         this.modeDelete = false;
@@ -43,9 +42,10 @@ export class ProjectComponent implements OnInit {
         this.project = new Project(0, '', '', '', '', '');
       } 
 
+      // Mode (update)
       if (mode === "update") {
-        this.modeTitle = "Edición de Proyecto";
-        this.modeButton= "Actualizar Proyecto";         
+        this.modeTitle = "Editar Proyecto";
+        this.modeButton= "Actualizar";         
         this.modeCreate = false;
         this.modeUpdate = true;
         this.modeDelete = false;
@@ -53,9 +53,10 @@ export class ProjectComponent implements OnInit {
         this.project = this.list[index];
       }
       
+      // Mode (delete)
       if (mode === "delete") {
-        this.modeTitle = "Borrado de Proyecto";
-        this.modeButton= "Borrar Proyecto";
+        this.modeTitle = "Borrar Proyecto";
+        this.modeButton= "Borrar";
         this.modeCreate = false;
         this.modeUpdate = false;
         this.modeDelete = true;
@@ -80,49 +81,50 @@ export class ProjectComponent implements OnInit {
 
     // Service (create)
     this.projectService.create(this.project).subscribe((data) => {      
-      // Dialog
-      
-      this.dialog.onDialog( {title: "AAA", description: "ZZZ"} );
-      //this.dialog.modal.description = "Creación de experiencia confirmada...";
-      //AppComponent.modal.description = "Creación de experiencia confirmada...";
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
 
       // Service (list)
       this.projectService.list().subscribe((data) => {
         this.list = data;
       });
     }, (err) => {
-      // Dialog
-      //AppComponent.modal.description = `¡ERROR!... ${err.message}`;
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });    
   }
 
-  onUpdate(index: number):void {
+  onUpdate():void {
     // Project (update)
-    this.list[index].name = (<HTMLInputElement>document.getElementById('modalForm_Project-name')).value;
-    this.list[index].description = (<HTMLInputElement>document.getElementById('modalForm_Project-description')).value;
-    this.list[index].link = (<HTMLInputElement>document.getElementById('modalForm_Project-link')).value;
-    this.list[index].period = (<HTMLInputElement>document.getElementById('modalForm_Project-period')).value;
-    this.list[index].image = (<HTMLInputElement>document.getElementById('modalForm_Project-image')).value;
+    this.project.name = (<HTMLInputElement>document.getElementById('modalForm_Project-name')).value;
+    this.project.description = (<HTMLInputElement>document.getElementById('modalForm_Project-description')).value;
+    this.project.link = (<HTMLInputElement>document.getElementById('modalForm_Project-link')).value;
+    this.project.period = (<HTMLInputElement>document.getElementById('modalForm_Project-period')).value;
+    this.project.image = (<HTMLInputElement>document.getElementById('modalForm_Project-image')).value;
 
     // Service (update)
-    this.projectService.update(this.list[index]).subscribe((data) => {
-      console.log(`OK onUpdate!: ${data}`);
+    this.projectService.update(this.project).subscribe((data) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
     }, (err) => {
-      console.log(`ERROR onUpdate!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 
-  onDelete(index: number):void {
+  onDelete():void {
     // Service (delete)
-    this.projectService.delete(this.list[index].id).subscribe((data) => {
-      console.log(`OK onDelete!: ${data}`);
+    this.projectService.delete(this.project.id).subscribe((data) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
 
       // Service (list)
       this.projectService.list().subscribe((data) => {
         this.list = data;
       });
     }, (err) => {
-      console.log(`ERROR onDelete!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 }

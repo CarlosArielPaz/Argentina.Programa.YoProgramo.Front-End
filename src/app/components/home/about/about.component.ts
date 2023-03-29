@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AppComponent } from 'src/app/app.component';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/model/user/user.model';
-//import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-about',
@@ -16,8 +16,11 @@ export class AboutComponent implements OnInit {
   constructor(public userService: UserService) {}
 
   ngOnInit(): void {
+    // Service (find)
     this.userService.find().subscribe((data) => {
       this.user = data;
+    }, (err) => {
+      console.log(`ERROR ngOnInit!: ${err.message}`);
     });
   }
 
@@ -27,15 +30,17 @@ export class AboutComponent implements OnInit {
     this.user.description = (<HTMLInputElement>document.getElementById('modalForm_User-description')).value;
     this.user.web = (<HTMLInputElement>document.getElementById('modalForm_User-web')).value;
     this.user.email = (<HTMLInputElement>document.getElementById('modalForm_User-email')).value;
+    this.user.version = (<HTMLInputElement>document.getElementById('modalForm_User-version')).value;
     this.user.imageProfile = (<HTMLInputElement>document.getElementById('modalForm_User-imageProfile')).value;
     this.user.imageBackground = (<HTMLInputElement>document.getElementById('modalForm_User-imageBackground')).value;
-    this.user.version = (<HTMLInputElement>document.getElementById('modalForm_User-version')).value;
 
     // Service (update)
     this.userService.update(this.user).subscribe((data) => {
-      console.log(`OK onUpdate!: ${data}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "Datos Personales", "message": "¡Actualización confirmada!"}`));
     }, (err) => {
-      console.log(`ERROR onUpdate!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "Datos Personales", "message": "ERROR: ${err.message}"}`));
     });
   }
 }

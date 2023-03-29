@@ -3,44 +3,43 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="formLabel">{{modeTitle}}</h1>
+          <h1 class="modal-title fs-4 text-secondary" id="formLabel">{{modeTitle}}</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form>
             <div class="mb-3">
               <label for="modalForm_Project-name" class="form-label text-primary">Nombre del proyecto</label>
-              <input type="text" required class="form-control" id="modalForm_Project-name" aria-describedby="modalForm_Project-nameHelp" placeholder="Nombre..." maxlength="50" value="{{project.name}}">
+              <input [disabled]="modeDelete" type="text" required class="form-control" id="modalForm_Project-name" aria-describedby="modalForm_Project-nameHelp" placeholder="Nombre..." maxlength="50" value="{{project.name}}">
               <div id="modalForm_Project-nameHelp" class="form-text">Nombre clave del proyecto.</div>
             </div>
             <div class="mb-3">
               <label for="modalForm_Project-description" class="form-label text-primary">Descripción del proyecto</label>
-              <textarea required class="form-control" id="modalForm_Project-description" aria-describedby="modalForm_Project-descriptionHelp" placeholder="Descripción..." maxlength="255" value="{{project.description}}"></textarea>
+              <textarea [disabled]="modeDelete" required class="form-control" id="modalForm_Project-description" aria-describedby="modalForm_Project-descriptionHelp" placeholder="Descripción..." maxlength="255" value="{{project.description}}"></textarea>
               <div id="modalForm_Project-descriptionHelp" class="form-text">Descripción de las actividades realizadas en el proyecto.</div>
             </div>
             <div class="mb-3">
                 <label for="modalForm_Project-link" class="form-label text-primary">Link del proyecto</label>
-                <input type="url" required class="form-control" id="modalForm_Project-link" aria-describedby="modalForm_Project-linkHelp" placeholder="https://..." maxlength="255" value="{{project.link}}">
+                <input [disabled]="modeDelete" type="url" required class="form-control" id="modalForm_Project-link" aria-describedby="modalForm_Project-linkHelp" placeholder="https://..." maxlength="255" value="{{project.link}}">
                 <div id="modalForm_Project-linkHelp" class="form-text">Ingresa la URL del proyecto.</div>
             </div>            
             <div class="mb-3">
               <label for="modalForm_Project-period" class="form-label text-primary">Periodo de tiempo del proyecto</label>
-              <input type="text" required class="form-control" id="modalForm_Project-period" aria-describedby="modalForm_Project-periodHelp" placeholder="Periodo..." maxlength="50" value="{{project.period}}">
+              <input [disabled]="modeDelete" type="text" required class="form-control" id="modalForm_Project-period" aria-describedby="modalForm_Project-periodHelp" placeholder="Periodo..." maxlength="50" value="{{project.period}}">
               <div id="modalForm_Project-periodHelp" class="form-text">Periodo de tiempo en que se realizó el proyecto.</div>
             </div>
             <div class="mb-3">
               <label for="modalForm_Project-image" class="form-label text-primary">Imagen del proyecto</label>
-              <input type="url" required class="form-control" id="modalForm_Project-image" aria-describedby="modalForm_Project-imageHelp" placeholder="https://..." maxlength="255" value="{{project.image}}">
+              <input [disabled]="modeDelete" type="url" required class="form-control" id="modalForm_Project-image" aria-describedby="modalForm_Project-imageHelp" placeholder="https://..." maxlength="255" value="{{project.image}}">
               <div id="modalForm_Project-imageHelp" class="form-text">Ingresa la URL de una imagen representativa del proyecto.</div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <!-- <button *ngIf="modeCreate" type="button" class="btn btn-primary" (click)="onCreate()">{{modeButton}}</button> -->
           <button *ngIf="modeCreate" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onCreate()">{{modeButton}}</button>
-          <button *ngIf="modeUpdate" type="button" class="btn btn-primary" (click)="onUpdate(0)">{{modeButton}}</button>
-          <button *ngIf="modeDelete" type="button" class="btn btn-primary" (click)="onDelete(0)">{{modeButton}}</button>
+          <button *ngIf="modeUpdate" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onUpdate()">{{modeButton}}</button>
+          <button *ngIf="modeDelete" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onDelete()">{{modeButton}}</button>
         </div>
       </div>
     </div>
@@ -51,7 +50,7 @@
     <h1><i class="bi bi-bookmark-check"></i>Proyecto</h1>
     <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#modalForm_Project" mode="create" index="0"><i class="bi bi-plus-lg"></i></button>
     <div class="mt-4 d-flex flex-colum flex-wrap">
-      <div *ngFor="let project of list; index as i" class="card mb-4 w-100">
+      <div *ngFor="let project of list; index as index" class="card mb-4 w-100">
         <div class="row g-0">
           <div class="col-md-4">
             <img src="{{project.image}}" class="img-fluid rounded-start card-image" alt="imagen">
@@ -65,8 +64,8 @@
             </div>
           </div>
         </div>
-        <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_Project" mode="update" index="0"><i class="bi bi-pencil-fill"></i></button>
-        <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-delete" data-bs-toggle="modal" data-bs-target="#modalForm_Project" mode="delete" index="0"><i class="bi bi-trash3"></i></button>
+        <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_Project" mode="update" [attr.index]="index"><i class="bi bi-pencil-fill"></i></button>
+        <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-delete" data-bs-toggle="modal" data-bs-target="#modalForm_Project" mode="delete" [attr.index]="index"><i class="bi bi-trash3"></i></button>
       </div>    
   </div>
   </div>

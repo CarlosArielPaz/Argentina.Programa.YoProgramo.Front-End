@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AppComponent } from 'src/app/app.component';
 import { SkillService } from 'src/app/services/skill/skill.service';
 import { Skill } from 'src/app/model/skill/skill.model';
 
@@ -22,17 +23,18 @@ export class SkillComponent implements OnInit {
   constructor(public skillService: SkillService) {}
 
   ngOnInit(): void {
-// Modal (modalForm_Skill)
-const modalForm_Skill: HTMLDivElement = <HTMLDivElement>document.getElementById('modalForm_Skill');
+  // Modal (modalForm_Skill)
+  const modalForm_Skill: HTMLDivElement = <HTMLDivElement>document.getElementById('modalForm_Skill');
 
-modalForm_Skill.addEventListener('show.bs.modal', (event: any) => {
+  modalForm_Skill.addEventListener('show.bs.modal', (event: any) => {
   const button: HTMLButtonElement = <HTMLButtonElement>event.relatedTarget;
   const mode: string = String(button.getAttribute('mode'));
   const index: number = Number(button.getAttribute('index'));
 
+  // Mode (create)
   if (mode === "create") {
-    this.modeTitle = "Creación de Habilidad";
-    this.modeButton= "Crear Habilidad";   
+    this.modeTitle = "Crear Habilidad";
+    this.modeButton= "Crear";   
     this.modeCreate = true;
     this.modeUpdate = false;
     this.modeDelete = false;
@@ -40,9 +42,10 @@ modalForm_Skill.addEventListener('show.bs.modal', (event: any) => {
     this.skill = new Skill(0, '', 0, '');
   } 
 
+  // Mode (update)
   if (mode === "update") {
-    this.modeTitle = "Edición de Habilidad";
-    this.modeButton= "Actualizar Habilidad";         
+    this.modeTitle = "Editar Habilidad";
+    this.modeButton= "Actualizar";         
     this.modeCreate = false;
     this.modeUpdate = true;
     this.modeDelete = false;
@@ -50,9 +53,10 @@ modalForm_Skill.addEventListener('show.bs.modal', (event: any) => {
     this.skill = this.list[index];
   }
   
+  // Mode (delete)
   if (mode === "delete") {
-    this.modeTitle = "Borrado de Habilidad";
-    this.modeButton= "Borrar Habilidad";
+    this.modeTitle = "Borrar Habilidad";
+    this.modeButton= "Borrar";
     this.modeCreate = false;
     this.modeUpdate = false;
     this.modeDelete = true;
@@ -75,47 +79,48 @@ this.skillService.list().subscribe((data) => {
 
     // Service (create)
     this.skillService.create(this.skill).subscribe((data) => {      
-      // Dialog
-      
-      //this.dialog.onDialog( {title: "AAA", description: "ZZZ"} );
-      //this.dialog.modal.description = "Creación de experiencia confirmada...";
-      //AppComponent.modal.description = "Creación de experiencia confirmada...";
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
 
       // Service (list)
       this.skillService.list().subscribe((data) => {
         this.list = data;
       });
     }, (err) => {
-      // Dialog
-      //AppComponent.modal.description = `¡ERROR!... ${err.message}`;
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });    
   }
 
-  onUpdate(index: number):void {
+  onUpdate():void {
     // Skill (update)
-    this.list[index].title = (<HTMLInputElement>document.getElementById('modalForm_Skill-title')).value;
-    this.list[index].percentage = Number((<HTMLInputElement>document.getElementById('modalForm_Skill-percentage')).value);
-    this.list[index].image = (<HTMLInputElement>document.getElementById('modalForm_Skill-image')).value;
+    this.skill.title = (<HTMLInputElement>document.getElementById('modalForm_Skill-title')).value;
+    this.skill.percentage = Number((<HTMLInputElement>document.getElementById('modalForm_Skill-percentage')).value);
+    this.skill.image = (<HTMLInputElement>document.getElementById('modalForm_Skill-image')).value;
 
     // Service (update)
-    this.skillService.update(this.list[index]).subscribe((data) => {
-      console.log(`OK onUpdate!: ${data}`);
+    this.skillService.update(this.skill).subscribe((data) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
     }, (err) => {
-      console.log(`ERROR onUpdate!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 
-  onDelete(index: number):void {
+  onDelete():void {
     // Service (delete)
-    this.skillService.delete(this.list[index].id).subscribe((data) => {
-      console.log(`OK onDelete!: ${data}`);
+    this.skillService.delete(this.skill.id).subscribe((data) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
 
       // Service (list)
       this.skillService.list().subscribe((data) => {
         this.list = data;
       });
     }, (err) => {
-      console.log(`ERROR onDelete!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }  
 }

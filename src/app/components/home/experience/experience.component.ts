@@ -9,8 +9,6 @@ import { Experience } from 'src/app/model/experience/experience.model';
   styleUrls: ['./experience.component.css'],
 })
 export class ExperienceComponent implements OnInit {
-  private dialog = new AppComponent();
-
   public isLogged: boolean = true;
 
   public list: Experience[] = [];
@@ -21,7 +19,7 @@ export class ExperienceComponent implements OnInit {
   public modeCreate: boolean = false;
   public modeUpdate: boolean = false;
   public modeDelete: boolean = false;
-  
+
   constructor(public experienceService: ExperienceService) {}
 
   ngOnInit(): void {
@@ -32,10 +30,11 @@ export class ExperienceComponent implements OnInit {
       const button: HTMLButtonElement = <HTMLButtonElement>event.relatedTarget;
       const mode: string = String(button.getAttribute('mode'));
       const index: number = Number(button.getAttribute('index'));
-
+    
+      // Mode (create)
       if (mode === "create") {
-        this.modeTitle = "Creación de Experiencia";
-        this.modeButton= "Crear Experiencia";   
+        this.modeTitle = "Crear Experiencia";
+        this.modeButton= "Crear";
         this.modeCreate = true;
         this.modeUpdate = false;
         this.modeDelete = false;
@@ -43,9 +42,10 @@ export class ExperienceComponent implements OnInit {
         this.experience = new Experience(0, '', '', '', '');
       } 
 
+      // Mode (update)
       if (mode === "update") {
-        this.modeTitle = "Edición de Experiencia";
-        this.modeButton= "Actualizar Experiencia";         
+        this.modeTitle = "Editar Experiencia";
+        this.modeButton= "Actualizar";         
         this.modeCreate = false;
         this.modeUpdate = true;
         this.modeDelete = false;
@@ -53,21 +53,23 @@ export class ExperienceComponent implements OnInit {
         this.experience = this.list[index];
       }
       
+      // Mode (delete)
       if (mode === "delete") {
-        this.modeTitle = "Borrado de Experiencia";
-        this.modeButton= "Borrar Experiencia";
+        this.modeTitle = "Borrar Experiencia";
+        this.modeButton= "Borrar";
         this.modeCreate = false;
         this.modeUpdate = false;
         this.modeDelete = true;
-
+        
         this.experience = this.list[index];
       }   
-     });
-    
-    // Service (list)
-    this.experienceService.list().subscribe((data) => {
-      this.list = data;
     });
+    
+      // Service (list)
+      this.experienceService.list().subscribe(list => {
+        this.list = list;
+      }, err => {
+      });
   }
   
   onCreate():void {
@@ -78,49 +80,51 @@ export class ExperienceComponent implements OnInit {
     this.experience.image = (<HTMLInputElement>document.getElementById('modalForm_Experience-image')).value;
 
     // Service (create)
-    this.experienceService.create(this.experience).subscribe((data) => {      
-      // Dialog
-      
-      this.dialog.onDialog( {title: "AAA", description: "ZZZ"} );
-      //this.dialog.modal.description = "Creación de experiencia confirmada...";
-      //AppComponent.modal.description = "Creación de experiencia confirmada...";
-
-      // Service (list)
-      this.experienceService.list().subscribe((data) => {
-        this.list = data;
-      });
-    }, (err) => {
-      // Dialog
-      //AppComponent.modal.description = `¡ERROR!... ${err.message}`;
+    this.experienceService.create(this.experience).subscribe((data) => {    
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
+        
+        // Service (list)
+        this.experienceService.list().subscribe((data) => {
+          this.list = data;
+        });
+      }, (err) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });    
   }
 
-  onUpdate(index: number):void {
+  onUpdate():void {
     // Experience (update)
-    this.list[index].title = (<HTMLInputElement>document.getElementById('modalForm_Experience-title')).value;
-    this.list[index].description = (<HTMLInputElement>document.getElementById('modalForm_Experience-description')).value;
-    this.list[index].period = (<HTMLInputElement>document.getElementById('modalForm_Experience-period')).value;
-    this.list[index].image = (<HTMLInputElement>document.getElementById('modalForm_Experience-image')).value;
+    this.experience.title = (<HTMLInputElement>document.getElementById('modalForm_Experience-title')).value;
+    this.experience.description = (<HTMLInputElement>document.getElementById('modalForm_Experience-description')).value;
+    this.experience.period = (<HTMLInputElement>document.getElementById('modalForm_Experience-period')).value;
+    this.experience.image = (<HTMLInputElement>document.getElementById('modalForm_Experience-image')).value;
 
     // Service (update)
-    this.experienceService.update(this.list[index]).subscribe((data) => {
-      console.log(`OK onUpdate!: ${data}`);
+    this.experienceService.update(this.experience).subscribe((data) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
     }, (err) => {
-      console.log(`ERROR onUpdate!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 
-  onDelete(index: number):void {
+  onDelete():void {
+    const index = 0;
     // Service (delete)
-    this.experienceService.delete(this.list[index].id).subscribe((data) => {
-      console.log(`OK onDelete!: ${data}`);
+    this.experienceService.delete(this.experience.id).subscribe((data) => {
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
 
       // Service (list)
       this.experienceService.list().subscribe((data) => {
         this.list = data;
       });
     }, (err) => {
-      console.log(`ERROR onDelete!: ${err.message}`);
+        // Dialog
+        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 }

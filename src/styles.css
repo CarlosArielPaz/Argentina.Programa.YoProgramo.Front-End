@@ -1,1 +1,6 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+
+body {
+    /* background-image: url("./assets/img/background.jpg") !important; */
+    background-color: #fbfbfb !important;
+}
