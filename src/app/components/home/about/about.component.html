@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="modalForm_User" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="formLabel" aria-hidden="true">
+<div id="modalForm_User" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="formLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
@@ -7,48 +7,47 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="formGroup" >
           <div class="mb-3">
-            <label for="modalForm_User-name" class="form-label text-primary">Nombre</label>
-            <input type="text" required class="form-control" id="modalForm_User-name" aria-describedby="modalForm_User-nameHelp" placeholder="Nombre..." maxlength="50" value="{{user.name}}">
-            <div id="modalForm_User-nameHelp" class="form-text">Ingresa el nombre completo.</div>
+            <label for="modalForm_User.name" class="form-label text-primary">Nombre</label>
+            <input id="modalForm_User.name" formControlName="name" type="text" placeholder="Nombre..." class="form-control" aria-describedby="modalForm_User.nameHelp">
+            <div id="modalForm_User.nameHelp" class="form-text">Ingresa el nombre completo.</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_User-description" class="form-label text-primary">Descripción</label>
-            <textarea required class="form-control" id="modalForm_User-description" aria-describedby="modalForm_User-descriptionHelp" placeholder="Descripción..." maxlength="255" value="{{user.description}}"></textarea>
-            <div id="modalForm_User-descriptionHelp" class="form-text">Ingresa una breve descripción (máximo 200 letras).</div>
+            <label for="modalForm_User.description" class="form-label text-primary">Descripción</label>
+            <textarea id="modalForm_User.description" formControlName="description" placeholder="Descripción..." class="form-control" aria-describedby="modalForm_User.descriptionHelp"></textarea>
+            <div id="modalForm_User.descriptionHelp" class="form-text">Ingresa una breve descripción (máximo 200 letras).</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_User-web" class="form-label text-primary">Web</label>
-            <input type="url" required class="form-control" id="modalForm_User-web" aria-describedby="modalForm_User-webHelp" placeholder="https://..." maxlength="255" value="{{user.web}}">
-            <div id="modalForm_User-webHelp" class="form-text">Ingresa la dirección URL de tu Web personal.</div>
+            <label for="modalForm_User.web" class="form-label text-primary">Web</label>
+            <input id="modalForm_User.web" formControlName="web" type="url" placeholder="https://..." class="form-control" aria-describedby="modalForm_User.webHelp">
+            <div id="modalForm_User.webHelp" class="form-text">Ingresa la dirección URL de tu Web personal.</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_User-email" class="form-label text-primary">Correo Electrónico</label>
-            <input type="email" required class="form-control" id="modalForm_User-email" aria-describedby="modalForm_User-emailHelp" placeholder="...@..." maxlength="50" value="{{user.email}}">
-            <div id="modalForm_User-emailHelp" class="form-text">Ingresa el correo electrónico de contacto.</div>
+            <label for="modalForm_User.email" class="form-label text-primary">Correo Electrónico</label>
+            <input id="modalForm_User.email" formControlName="email" type="email" placeholder="...@..." class="form-control" aria-describedby="modalForm_User.emailHelp">
+            <div id="modalForm_User.emailHelp" class="form-text">Ingresa el correo electrónico de contacto.</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_User-version" class="form-label text-primary">Versión</label>
-            <input type="text" required class="form-control" id="modalForm_User-version" aria-describedby="modalForm_User-versionHelp" placeholder="Versión..." maxlength="50" value="{{user.version}}">
-            <div id="modalForm_User-versionHelp" class="form-text">Ingresa la versión de tu portfolio (ej. Enero 23, v1.0.0).</div>
+            <label for="modalForm_User.version" class="form-label text-primary">Versión</label>
+            <input id="modalForm_User.version" formControlName="version" type="text" placeholder="Versión..." class="form-control" aria-describedby="modalForm_User.versionHelp">
+            <div id="modalForm_User.versionHelp" class="form-text">Ingresa la versión de tu portfolio (ej. Enero 23, v1.0.0).</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_User-imageProfile" class="form-label text-primary">Imagen de Perfil</label>
-            <input type="url" required class="form-control" id="modalForm_User-imageProfile" aria-describedby="modalForm_User-imageProfileHelp" placeholder="https://..." maxlength="255" value="{{user.imageProfile}}">
-            <div id="modalForm_User-imageProfileHelp" class="form-text">Ingresa la URL de una imagen para tu perfil.</div>
+            <label for="modalForm_User.imageProfile" class="form-label text-primary">Imagen de Perfil</label>
+            <input id="modalForm_User.imageProfile" formControlName="imageProfile" type="url" placeholder="https://..." class="form-control" aria-describedby="modalForm_User.imageProfileHelp">
+            <div id="modalForm_User.imageProfileHelp" class="form-text">Ingresa la URL de una imagen para tu perfil.</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_User-imageBackground" class="form-label text-primary">Imagen de Fondo</label>
-            <input type="url" required class="form-control" id="modalForm_User-imageBackground" aria-describedby="modalForm_User-imageBackgroundHelp" placeholder="https://..." maxlength="255" value="{{user.imageBackground}}">
-            <div id="modalForm_User-imageBackgroundHelp" class="form-text">Ingresa la URL de una imagen de fondo.</div>
+            <label for="modalForm_User.imageBackground" class="form-label text-primary">Imagen de Fondo</label>
+            <input id="modalForm_User.imageBackground" formControlName="imageBackground" type="url" placeholder="https://..." class="form-control" aria-describedby="modalForm_User.imageBackgroundHelp">
+            <div id="modalForm_User.imageBackgroundHelp" class="form-text">Ingresa la URL de una imagen de fondo.</div>
           </div>          
-
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onUpdate()">Actualizar</button>
+        <button [disabled]="formGroup.invalid" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onUpdate()">Actualizar</button>
       </div>
     </div>
   </div>
@@ -71,4 +70,3 @@
     </div>
   </div>
 </div>
-

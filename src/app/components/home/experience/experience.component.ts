@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppComponent } from 'src/app/app.component';
 import { ExperienceService } from 'src/app/services/experience/experience.service';
 import { Experience } from 'src/app/model/experience/experience.model';
@@ -12,7 +13,7 @@ export class ExperienceComponent implements OnInit {
   public isLogged: boolean = true;
 
   public list: Experience[] = [];
-  public experience: Experience = new Experience(0, '', '', '', '');
+  public experience: Experience = new Experience(0, '', '', '', './assets/img/download/download.jpg');
 
   public modeTitle: string = "";
   public modeButton: string = "";
@@ -20,111 +21,121 @@ export class ExperienceComponent implements OnInit {
   public modeUpdate: boolean = false;
   public modeDelete: boolean = false;
 
-  constructor(public experienceService: ExperienceService) {}
+  public formGroup!: FormGroup;
+
+  constructor(public experienceService: ExperienceService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    // Modal (modalForm_Experience)
+    // Form
+    this.formGroup = this.formBuilder.group({
+      title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.maxLength(255)]],
+      period: ['', [Validators.required, Validators.maxLength(50)]],
+      image: ['', [Validators.required, Validators.maxLength(255)]]
+    });
+
+    // Modal
     const modalForm_Experience: HTMLDivElement = <HTMLDivElement>document.getElementById('modalForm_Experience');
 
     modalForm_Experience.addEventListener('show.bs.modal', (event: any) => {
       const button: HTMLButtonElement = <HTMLButtonElement>event.relatedTarget;
       const mode: string = String(button.getAttribute('mode'));
       const index: number = Number(button.getAttribute('index'));
-    
+
       // Mode (create)
       if (mode === "create") {
+        // Mode
         this.modeTitle = "Crear Experiencia";
-        this.modeButton= "Crear";
+        this.modeButton = "Crear";
         this.modeCreate = true;
         this.modeUpdate = false;
         this.modeDelete = false;
 
+        // Experience
         this.experience = new Experience(0, '', '', '', '');
-      } 
+      }
 
       // Mode (update)
       if (mode === "update") {
+        // Mode
         this.modeTitle = "Editar Experiencia";
-        this.modeButton= "Actualizar";         
+        this.modeButton = "Actualizar";
         this.modeCreate = false;
         this.modeUpdate = true;
         this.modeDelete = false;
 
+        // Experience
         this.experience = this.list[index];
       }
-      
+
       // Mode (delete)
       if (mode === "delete") {
+        // Mode
         this.modeTitle = "Borrar Experiencia";
-        this.modeButton= "Borrar";
+        this.modeButton = "Borrar";
         this.modeCreate = false;
         this.modeUpdate = false;
         this.modeDelete = true;
-        
+
+        // Experience
         this.experience = this.list[index];
-      }   
+      }
+
+      // Form
+      this.formGroup.patchValue(this.experience);
+
+      if (this.modeDelete)
+        this.formGroup.disable();
+      else
+        this.formGroup.enable();
     });
-    
-      // Service (list)
-      this.experienceService.list().subscribe(list => {
-        this.list = list;
-      }, err => {
-      });
+
+    // Service (list)
+    this.experienceService.list().subscribe((data) => {
+      // Experiences
+      this.list = data;
+    });
   }
-  
-  onCreate():void {
-    // Experience (create)
-    this.experience.title = (<HTMLInputElement>document.getElementById('modalForm_Experience-title')).value;
-    this.experience.description = (<HTMLInputElement>document.getElementById('modalForm_Experience-description')).value;
-    this.experience.period = (<HTMLInputElement>document.getElementById('modalForm_Experience-period')).value;
-    this.experience.image = (<HTMLInputElement>document.getElementById('modalForm_Experience-image')).value;
+
+  onCreate(): void {
+    // Experiencie
+    Object.assign(this.experience, this.formGroup.value);
 
     // Service (create)
-    this.experienceService.create(this.experience).subscribe((data) => {    
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
-        
-        // Service (list)
-        this.experienceService.list().subscribe((data) => {
-          this.list = data;
-        });
-      }, (err) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
-    });    
-  }
-
-  onUpdate():void {
-    // Experience (update)
-    this.experience.title = (<HTMLInputElement>document.getElementById('modalForm_Experience-title')).value;
-    this.experience.description = (<HTMLInputElement>document.getElementById('modalForm_Experience-description')).value;
-    this.experience.period = (<HTMLInputElement>document.getElementById('modalForm_Experience-period')).value;
-    this.experience.image = (<HTMLInputElement>document.getElementById('modalForm_Experience-image')).value;
-
-    // Service (update)
-    this.experienceService.update(this.experience).subscribe((data) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
-    }, (err) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
-    });
-  }
-
-  onDelete():void {
-    const index = 0;
-    // Service (delete)
-    this.experienceService.delete(this.experience.id).subscribe((data) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
+    this.experienceService.create(this.experience).subscribe((data) => {
+      // Dialog
+      AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
 
       // Service (list)
       this.experienceService.list().subscribe((data) => {
+        // Experiences
         this.list = data;
       });
-    }, (err) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
+    });
+  }
+
+  onUpdate(): void {
+    // Experience
+    Object.assign(this.experience, this.formGroup.value);
+
+    // Service (update)
+    this.experienceService.update(this.experience).subscribe((data) => {
+      // Dialog
+      AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
+    });
+  }
+
+  onDelete(): void {
+    // Service (delete)
+    this.experienceService.delete(this.experience.id).subscribe((data) => {
+      // Dialog
+      AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
+
+      // Service (list)
+      this.experienceService.list().subscribe((data) => {
+        // Experiences
+        this.list = data;
+      });
     });
   }
 }

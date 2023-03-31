@@ -7,34 +7,34 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form [formGroup]="formGroup">
           <div class="mb-3">
-            <label for="modalForm_Experience-title" class="form-label text-primary">Título del puesto</label>
-            <input [disabled]="modeDelete" type="text" required class="form-control" id="modalForm_Experience-title" aria-describedby="modalForm_Experience-titleHelp" placeholder="Título..." maxlength="50" value="{{experience.title}}">
-            <div id="modalForm_Experience-titleHelp" class="form-text">Título del Puesto.</div>
+            <label for="modalForm_Experience.title" class="form-label text-primary">Título del puesto</label>
+            <input id="modalForm_Experience.title" formControlName="title" type="text" placeholder="Título..." class="form-control" aria-describedby="modalForm_Experience.titleHelp">
+            <div id="modalForm_Experience.titleHelp" class="form-text">Título del Puesto.</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_Experience-description" class="form-label text-primary">Descripción del puesto</label>
-            <textarea [disabled]="modeDelete" required class="form-control" id="modalForm_Experience-description" aria-describedby="modalForm_Experience-descriptionHelp" placeholder="Descripción..." maxlength="255" value="{{experience.description}}"></textarea>
-            <div id="modalForm_Experience-descriptionHelp" class="form-text">Descripción de las actividades realizadas en el puesto.</div>
+            <label for="modalForm_Experience.description" class="form-label text-primary">Descripción del puesto</label>
+            <textarea id="modalForm_Experience.description" formControlName="description" placeholder="Descripción..." class="form-control" aria-describedby="modalForm_Experience.descriptionHelp"></textarea>
+            <div id="modalForm_Experience.descriptionHelp" class="form-text">Descripción de las actividades realizadas en el puesto.</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_Experience-period" class="form-label text-primary">Periodo de tiempo en el puesto</label>
-            <input [disabled]="modeDelete" type="text" required class="form-control" id="modalForm_Experience-period" aria-describedby="modalForm_Experience-periodHelp" placeholder="Periodo..." maxlength="50" value="{{experience.period}}">
-            <div id="modalForm_Experience-periodHelp" class="form-text">Periodo de tiempo en el puesto.</div>
+            <label for="modalForm_Experience.period" class="form-label text-primary">Periodo de tiempo en el puesto</label>
+            <input id="modalForm_Experience.period" formControlName="period" type="text" placeholder="Periodo..." class="form-control" aria-describedby="modalForm_Experience.periodHelp">
+            <div id="modalForm_Experience.periodHelp" class="form-text">Periodo de tiempo en el puesto.</div>
           </div>
           <div class="mb-3">
-            <label for="modalForm_Experience-image" class="form-label text-primary">Imagen</label>
-            <input [disabled]="modeDelete" type="url" required class="form-control" id="modalForm_Experience-image" aria-describedby="modalForm_Experience-imageHelp" placeholder="https://..." maxlength="255" value="{{experience.image}}">
-            <div id="modalForm_Experience-imageHelp" class="form-text">Ingresa la URL de una imagen representativa de la experiencia.</div>
+            <label for="modalForm_Experience.image" class="form-label text-primary">Imagen</label>
+            <input id="modalForm_Experience.image" formControlName="image" type="url" placeholder="https://..." class="form-control" aria-describedby="modalForm_Experience.imageHelp">
+            <div id="modalForm_Experience.imageHelp" class="form-text">Ingresa la URL de una imagen representativa de la experiencia.</div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button *ngIf="modeCreate" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onCreate()">{{modeButton}}</button>
-        <button *ngIf="modeUpdate" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onUpdate()">{{modeButton}}</button>
-        <button *ngIf="modeDelete" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onDelete()">{{modeButton}}</button>
+        <button *ngIf="modeCreate" [disabled]="formGroup.invalid" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onCreate()">{{modeButton}}</button>
+        <button *ngIf="modeUpdate" [disabled]="formGroup.invalid" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onUpdate()">{{modeButton}}</button>
+        <button *ngIf="modeDelete" [disabled]="formGroup.invalid" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onDelete()">{{modeButton}}</button>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
 <div class="container px-sm-0">
   <h1><i class="bi bi-bookmark-check"></i>Experiencia</h1>
   <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#modalForm_Experience" mode="create" index="0"><i class="bi bi-plus-lg"></i></button>
-  <div class="mt-4 d-flex flex-colum flex-wrap">
+  <div class="mt-5 d-flex flex-colum flex-wrap">
     <div *ngFor="let experience of list; index as index" class="card mb-4 w-100">
       <div class="row g-0">
         <div class="col-md-4">

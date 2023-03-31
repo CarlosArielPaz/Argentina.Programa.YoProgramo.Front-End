@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppComponent } from 'src/app/app.component';
 import { EducationService } from 'src/app/services/education/education.service';
 import { Education } from 'src/app/model/education/education.model';
@@ -19,11 +20,22 @@ export class EducationComponent implements OnInit {
   public modeCreate: boolean = false;
   public modeUpdate: boolean = false;
   public modeDelete: boolean = false;
-  
-  constructor(public educationService: EducationService) {}
+
+  public formGroup!: FormGroup;
+
+  constructor(public educationService: EducationService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    // Modal (modalForm_Education)
+    // Form
+    this.formGroup = this.formBuilder.group({
+      institute: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.maxLength(255)]],
+      period: ['', [Validators.required, Validators.maxLength(50)]],
+      image: ['', [Validators.required, Validators.maxLength(255)]]
+    });
+
+    // Modal
     const modalForm_Education: HTMLDivElement = <HTMLDivElement>document.getElementById('modalForm_Education');
 
     modalForm_Education.addEventListener('show.bs.modal', (event: any) => {
@@ -33,98 +45,98 @@ export class EducationComponent implements OnInit {
 
       // Mode (create)
       if (mode === "create") {
+        // Mode
         this.modeTitle = "Crear Educación";
-        this.modeButton= "Crear";   
+        this.modeButton = "Crear";
         this.modeCreate = true;
         this.modeUpdate = false;
         this.modeDelete = false;
 
+        // Education
         this.education = new Education(0, '', '', '', '', '');
-      } 
+      }
 
       // Mode (update)
       if (mode === "update") {
+        // Mode
         this.modeTitle = "Editar Educación";
-        this.modeButton= "Actualizar";         
+        this.modeButton = "Actualizar";
         this.modeCreate = false;
         this.modeUpdate = true;
         this.modeDelete = false;
 
+        // Education
         this.education = this.list[index];
       }
-      
+
       // Mode (delete)
       if (mode === "delete") {
+        // Mode
         this.modeTitle = "Borrar Educación";
-        this.modeButton= "Borrar";
+        this.modeButton = "Borrar";
         this.modeCreate = false;
         this.modeUpdate = false;
         this.modeDelete = true;
 
+        // Education
         this.education = this.list[index];
-      }   
-     });
-    
+      }
+
+      // Form
+      this.formGroup.patchValue(this.education);
+
+      if (this.modeDelete)
+        this.formGroup.disable();
+      else
+        this.formGroup.enable();
+    });
+
     // Service (list)
     this.educationService.list().subscribe((data) => {
+      // Educations
       this.list = data;
     });
   }
-  
-  onCreate():void {
-    // Education (create)
-    this.education.institute = (<HTMLInputElement>document.getElementById('modalForm_Education-institute')).value;
-    this.education.title = (<HTMLInputElement>document.getElementById('modalForm_Education-title')).value;
-    this.education.description = (<HTMLInputElement>document.getElementById('modalForm_Education-description')).value;
-    this.education.period = (<HTMLInputElement>document.getElementById('modalForm_Education-period')).value;
-    this.education.image = (<HTMLInputElement>document.getElementById('modalForm_Education-image')).value;
+
+  onCreate(): void {
+    // Education
+    Object.assign(this.education, this.formGroup.value);
 
     // Service (create)
-    this.educationService.create(this.education).subscribe((data) => {      
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
+    this.educationService.create(this.education).subscribe((data) => {
+      // Dialog
+      AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
 
       // Service (list)
       this.educationService.list().subscribe((data) => {
+        // Educations
         this.list = data;
       });
-    }, (err) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
-    });    
-  }
-
-  onUpdate():void {
-    // Education (update)
-    this.education.institute = (<HTMLInputElement>document.getElementById('modalForm_Education-institute')).value;
-    this.education.title = (<HTMLInputElement>document.getElementById('modalForm_Education-title')).value;
-    this.education.description = (<HTMLInputElement>document.getElementById('modalForm_Education-description')).value;
-    this.education.period = (<HTMLInputElement>document.getElementById('modalForm_Education-period')).value;
-    this.education.image = (<HTMLInputElement>document.getElementById('modalForm_Education-image')).value;
-
-    // Service (update)
-    this.educationService.update(this.education).subscribe((data) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
-    }, (err) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 
-  onDelete():void {
+  onUpdate(): void {
+    // Education
+    Object.assign(this.education, this.formGroup.value);
+
+    // Service (update)
+    this.educationService.update(this.education).subscribe((data) => {
+      // Dialog
+      AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
+    });
+  }
+
+  onDelete(): void {
     // Service (delete)
     this.educationService.delete(this.education.id).subscribe((data) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
+      // Dialog
+      AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
 
       // Service (list)
       this.educationService.list().subscribe((data) => {
+        // Educations
         this.list = data;
       });
-    }, (err) => {
-        // Dialog
-        AppComponent.dialogMessage(JSON.parse(`{"type": "error", "title": "${this.modeTitle}", "message": "ERROR: ${err.message}"}`));
     });
   }
 }
