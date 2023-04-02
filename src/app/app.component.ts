@@ -9,6 +9,7 @@ export class AppComponent {
   //public static URL_BACKEND: string = 'http://192.168.10.100:8080';
   public static URL_BACKEND: string = 'https://argentina-programa-yoprogramo-back-end.onrender.com';
 
+  //public static AUTHENTICATED: boolean = true;
 
   public static dialogMessage(data: any) {
     const title = <HTMLDivElement>document.getElementById('modalDialog_Title');
@@ -35,5 +36,3 @@ export class AppComponent {
     message.innerHTML= `<h4>${data.message}</h4>`;
   }  
 }
-
-export let AUTHENTICATED: boolean = true;

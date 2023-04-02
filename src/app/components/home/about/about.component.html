@@ -55,16 +55,16 @@
 
 <!-- UI -->
 <div class="container px-sm-0 d-flex flex-column">
-  <img class="img-fluid img-background" height="200" src="{{user.imageBackground}}" alt="background" />
-  <div class="d-flex flex-column justify-content-start panel">
-    <img class="img-fluid img-perfil" src="{{user.imageProfile}}" alt="profile" />
+  <img class="img-fluid img-background" height="200" src="{{ user.imageBackground }}" alt="background" />
+  <div class="d-flex flex-column justify-content-start flex-lg-row panel">
+    <img class="img-fluid img-perfil" src="{{ user.imageProfile }}" alt="profile" />
     <div class="info">
-      <h1 class="name">{{ user.name }}</h1>
-      <p class="description">{{ user.description }}</p>
+      <h1>{{ user.name }}</h1>
+      <p>{{ user.description }}</p>
       <div class="pie">
-        <p><i class="bi bi-globe"></i>Web <a href="{{user.web}}" target="_blank">{{user.web}}</a></p>
-        <p><i class="bi bi-envelope"></i>Email <a href="mail:{{user.email}}">{{user.email}}</a></p>
-        <p><i class="bi bi-clock-history"></i>{{user.version}}</p>
+        <p><i class="bi bi-globe"></i>Web <a href="{{ user.web }}" target="_blank">{{ user.web }}</a></p>
+        <p><i class="bi bi-envelope"></i>Email <a href="mail:{{ user.email }}">{{ user.email }}</a></p>
+        <p><i class="bi bi-clock-history"></i>{{ user.version }}</p>
       </div>
       <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_User"><i class="bi bi-pencil-fill"></i></button>
     </div>

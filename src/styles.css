@@ -1,7 +1,27 @@
 @import "~bootstrap-icons/font/bootstrap-icons.css";
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap");
 
 body {
-    /* background-image: url("./assets/img/background1.png") !important; */
-    /* background-image: url("./assets/img/background.svg") !important; */
-    background-color: #fbfbfb !important;
+  font-family: "Open Sans", sans-serif !important;
+  background-color: #fbfbfb !important;
+}
+
+.collection-title {
+  font-family: "Roboto", sans-serif !important;
+  font-size: 1.75rem;
+  font-weight: 100;
+  color: #666;
+}
+
+@media (min-width: 576px) {
+  .collection-title {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .collection-title {
+    font-size: 2.5rem;
+  }
 }
