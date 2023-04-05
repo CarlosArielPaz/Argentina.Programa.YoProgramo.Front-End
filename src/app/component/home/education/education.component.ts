@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Authentication, AuthenticationService } from 'src/app/service/core/authentication.service';
 import { AppComponent } from 'src/app/app.component';
-import { SkillService } from 'src/app/services/skill/skill.service';
-import { Skill } from 'src/app/model/skill/skill.model';
+import { EducationService } from 'src/app/service/education/education.service';
+import { Education } from 'src/app/model/education/education.model';
 
 @Component({
-  selector: 'app-skill',
-  templateUrl: './skill.component.html',
-  styleUrls: ['./skill.component.css']
+  selector: 'app-education',
+  templateUrl: './education.component.html',
+  styleUrls: ['./education.component.css'],
 })
-export class SkillComponent implements OnInit {
-  public isLogged: boolean = true;
-
-  public list: Skill[] = [];
-  public skill: Skill = new Skill(0, '', 0, '');
+export class EducationComponent implements OnInit {
+  public authentication$: Observable<Authentication>;
+  
+  public list: Education[] = [];
+  public education: Education = new Education(0, '', '', '', '', '');
 
   public modeTitle: string = "";
   public modeButton: string = "";
@@ -23,20 +25,24 @@ export class SkillComponent implements OnInit {
 
   public formGroup!: FormGroup;
 
-  constructor(public skillService: SkillService, private formBuilder: FormBuilder) { }
+  constructor(private authenticationService: AuthenticationService, private educationService: EducationService, private formBuilder: FormBuilder) {
+    this.authentication$ = authenticationService.getAuthenticationObservable;
+  }
 
   ngOnInit(): void {
     // Form
     this.formGroup = this.formBuilder.group({
+      institute: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      percentage: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
+      description: ['', [Validators.required, Validators.maxLength(255)]],
+      period: ['', [Validators.required, Validators.maxLength(50)]],
       image: ['', [Validators.required, Validators.maxLength(255)]]
     });
 
     // Modal
-    const modalForm_Skill: HTMLDivElement = <HTMLDivElement>document.getElementById('modalForm_Skill');
+    const modalForm_Education: HTMLDivElement = <HTMLDivElement>document.getElementById('modalForm_Education');
 
-    modalForm_Skill.addEventListener('show.bs.modal', (event: any) => {
+    modalForm_Education.addEventListener('show.bs.modal', (event: any) => {
       const button: HTMLButtonElement = <HTMLButtonElement>event.relatedTarget;
       const mode: string = String(button.getAttribute('mode'));
       const index: number = Number(button.getAttribute('index'));
@@ -44,44 +50,44 @@ export class SkillComponent implements OnInit {
       // Mode (create)
       if (mode === "create") {
         // Mode
-        this.modeTitle = "Crear Habilidad";
+        this.modeTitle = "Crear Educación";
         this.modeButton = "Crear";
         this.modeCreate = true;
         this.modeUpdate = false;
         this.modeDelete = false;
 
-        // Skill
-        this.skill = new Skill(0, '', 0, '');
+        // Education
+        this.education = new Education(0, '', '', '', '', '');
       }
 
       // Mode (update)
       if (mode === "update") {
         // Mode
-        this.modeTitle = "Editar Habilidad";
+        this.modeTitle = "Editar Educación";
         this.modeButton = "Actualizar";
         this.modeCreate = false;
         this.modeUpdate = true;
         this.modeDelete = false;
 
-        // Skill
-        this.skill = this.list[index];
+        // Education
+        this.education = this.list[index];
       }
 
       // Mode (delete)
       if (mode === "delete") {
         // Mode
-        this.modeTitle = "Borrar Habilidad";
+        this.modeTitle = "Borrar Educación";
         this.modeButton = "Borrar";
         this.modeCreate = false;
         this.modeUpdate = false;
         this.modeDelete = true;
 
-        // Skill
-        this.skill = this.list[index];
+        // Education
+        this.education = this.list[index];
       }
 
       // Form
-      this.formGroup.patchValue(this.skill);
+      this.formGroup.patchValue(this.education);
 
       if (this.modeDelete)
         this.formGroup.disable();
@@ -90,35 +96,35 @@ export class SkillComponent implements OnInit {
     });
 
     // Service (list)
-    this.skillService.list().subscribe((data) => {
-      // Skills
+    this.educationService.list().subscribe((data) => {
+      // Educations
       this.list = data;
     });
   }
 
   onCreate(): void {
-    // Skill
-    Object.assign(this.skill, this.formGroup.value);
+    // Education
+    Object.assign(this.education, this.formGroup.value);
 
     // Service (create)
-    this.skillService.create(this.skill).subscribe((data) => {
+    this.educationService.create(this.education).subscribe((data) => {
       // Dialog
       AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
 
       // Service (list)
-      this.skillService.list().subscribe((data) => {
-        // Skills
+      this.educationService.list().subscribe((data) => {
+        // Educations
         this.list = data;
       });
     });
   }
 
   onUpdate(): void {
-    // Skill
-    Object.assign(this.skill, this.formGroup.value);
+    // Education
+    Object.assign(this.education, this.formGroup.value);
 
     // Service (update)
-    this.skillService.update(this.skill).subscribe((data) => {
+    this.educationService.update(this.education).subscribe((data) => {
       // Dialog
       AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
     });
@@ -126,13 +132,13 @@ export class SkillComponent implements OnInit {
 
   onDelete(): void {
     // Service (delete)
-    this.skillService.delete(this.skill.id).subscribe((data) => {
+    this.educationService.delete(this.education.id).subscribe((data) => {
       // Dialog
       AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
 
       // Service (list)
-      this.skillService.list().subscribe((data) => {
-        // Skills
+      this.educationService.list().subscribe((data) => {
+        // Educations
         this.list = data;
       });
     });

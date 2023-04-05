@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Authentication, AuthenticationService } from 'src/app/service/core/authentication.service';
 import { AppComponent } from 'src/app/app.component';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/service/user/user.service';
 import { User } from 'src/app/model/user/user.model';
 
 @Component({
@@ -10,13 +12,15 @@ import { User } from 'src/app/model/user/user.model';
   styleUrls: ['./about.component.css'],
 })
 export class AboutComponent implements OnInit {
-  public isLogged: boolean = true;
+  public authentication$: Observable<Authentication>;
 
   public user: User = new User(0, '', '', '', '', '', './assets/img/download/download.jpg', './assets/img/download/download.jpg');
 
   public formGroup!: FormGroup;
 
-  constructor(public userService: UserService, private formBuilder: FormBuilder) { }
+  constructor(private authenticationService: AuthenticationService, private userService: UserService, private formBuilder: FormBuilder) {
+    this.authentication$ = authenticationService.getAuthenticationObservable;
+  }
 
   ngOnInit(): void {
     // Form

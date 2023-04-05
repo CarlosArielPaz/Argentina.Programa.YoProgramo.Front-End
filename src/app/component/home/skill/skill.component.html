@@ -37,8 +37,8 @@
 
 <!-- UI -->
 <div class="container px-sm-0">  
-  <h1 class="collection-title"><i class="bi bi-bookmarks"></i>Habilidades Blandas y Duras</h1>
-  <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="create" index="0"><i class="bi bi-plus-lg"></i></button>
+  <h1 class="collection-title"><i class="bi bi-bookmarks"></i>Habilidades</h1>
+  <button *ngIf="(authentication$ | async)?.isAuthenticated" type="button" class="btn btn-lg btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="create" index="0"><i class="bi bi-plus-lg"></i></button>
   <div class="m-5 d-flex flex-column align-items-center flex-sm-row justify-content-sm-around flex-sm-wrap gap-4">
     <div *ngFor="let skill of list; index as index" class="circle">
       <circle-progress
@@ -61,8 +61,8 @@
       ></circle-progress>
       <h4 class="text-center">{{skill.title}}</h4>
       <h5 class="text-center circle-percentage">{{skill.percentage}}%</h5>
-        <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="update" [attr.index]="index"><i class="bi bi-pencil-fill"></i></button>
-        <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-delete" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="delete" [attr.index]="index"><i class="bi bi-trash3"></i></button>
+        <button *ngIf="(authentication$ | async)?.isAuthenticated" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="update" [attr.index]="index"><i class="bi bi-pencil-fill"></i></button>
+        <button *ngIf="(authentication$ | async)?.isAuthenticated" type="button" class="btn btn-lg btn-primary btn-delete" data-bs-toggle="modal" data-bs-target="#modalForm_Skill" mode="delete" [attr.index]="index"><i class="bi bi-trash3"></i></button>
       </div>
   </div>
 </div>

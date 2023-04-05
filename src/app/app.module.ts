@@ -6,15 +6,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
-import { HeaderComponent } from './components/home/header/header.component';
-import { AboutComponent } from './components/home/about/about.component';
-import { ExperienceComponent } from './components/home/experience/experience.component';
-import { EducationComponent } from './components/home/education/education.component';
-import { SkillComponent } from './components/home/skill/skill.component';
-import { ProjectComponent } from './components/home/project/project.component';
-import { FooterComponent } from './components/home/footer/footer.component';
-import { LoginComponent } from './components/login/login.component';
+import { HomeComponent } from './component/home/home.component';
+import { HeaderComponent } from './component/home/header/header.component';
+import { AboutComponent } from './component/home/about/about.component';
+import { ExperienceComponent } from './component/home/experience/experience.component';
+import { EducationComponent } from './component/home/education/education.component';
+import { SkillComponent } from './component/home/skill/skill.component';
+import { ProjectComponent } from './component/home/project/project.component';
+import { FooterComponent } from './component/home/footer/footer.component';
+import { LoginComponent } from './component/login/login.component';
 
 import { NgCircleProgressModule } from 'ng-circle-progress';
 

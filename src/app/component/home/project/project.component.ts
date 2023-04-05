@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Authentication, AuthenticationService } from 'src/app/service/core/authentication.service';
 import { AppComponent } from 'src/app/app.component';
-import { ExperienceService } from 'src/app/services/experience/experience.service';
-import { Experience } from 'src/app/model/experience/experience.model';
+import { ProjectService } from 'src/app/service/project/project.service';
+import { Project } from 'src/app/model/project/project.model';
 
 @Component({
-  selector: 'app-experience',
-  templateUrl: './experience.component.html',
-  styleUrls: ['./experience.component.css'],
+  selector: 'app-project',
+  templateUrl: './project.component.html',
+  styleUrls: ['./project.component.css'],
 })
-export class ExperienceComponent implements OnInit {
-  public isLogged: boolean = true;
-
-  public list: Experience[] = [];
-  public experience: Experience = new Experience(0, '', '', '', './assets/img/download/download.jpg');
+export class ProjectComponent implements OnInit {
+  public authentication$: Observable<Authentication>;
+  
+  public list: Project[] = [];
+  public project: Project = new Project(0, '', '', '', '', '');
 
   public modeTitle: string = "";
   public modeButton: string = "";
@@ -23,21 +25,24 @@ export class ExperienceComponent implements OnInit {
 
   public formGroup!: FormGroup;
 
-  constructor(public experienceService: ExperienceService, private formBuilder: FormBuilder) { }
+  constructor(private authenticationService: AuthenticationService, private projectService: ProjectService, private formBuilder: FormBuilder) {
+    this.authentication$ = authenticationService.getAuthenticationObservable;
+  }
 
   ngOnInit(): void {
     // Form
     this.formGroup = this.formBuilder.group({
-      title: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       description: ['', [Validators.required, Validators.maxLength(255)]],
+      link: ['', [Validators.required, Validators.maxLength(255)]],
       period: ['', [Validators.required, Validators.maxLength(50)]],
       image: ['', [Validators.required, Validators.maxLength(255)]]
     });
 
     // Modal
-    const modalForm_Experience: HTMLDivElement = <HTMLDivElement>document.getElementById('modalForm_Experience');
+    const modalForm_Project: HTMLDivElement = <HTMLDivElement>document.getElementById('modalForm_Project');
 
-    modalForm_Experience.addEventListener('show.bs.modal', (event: any) => {
+    modalForm_Project.addEventListener('show.bs.modal', (event: any) => {
       const button: HTMLButtonElement = <HTMLButtonElement>event.relatedTarget;
       const mode: string = String(button.getAttribute('mode'));
       const index: number = Number(button.getAttribute('index'));
@@ -45,44 +50,44 @@ export class ExperienceComponent implements OnInit {
       // Mode (create)
       if (mode === "create") {
         // Mode
-        this.modeTitle = "Crear Experiencia";
+        this.modeTitle = "Crear Proyecto";
         this.modeButton = "Crear";
         this.modeCreate = true;
         this.modeUpdate = false;
         this.modeDelete = false;
 
-        // Experience
-        this.experience = new Experience(0, '', '', '', '');
+        // Project
+        this.project = new Project(0, '', '', '', '', '');
       }
 
       // Mode (update)
       if (mode === "update") {
         // Mode
-        this.modeTitle = "Editar Experiencia";
+        this.modeTitle = "Editar Proyecto";
         this.modeButton = "Actualizar";
         this.modeCreate = false;
         this.modeUpdate = true;
         this.modeDelete = false;
 
-        // Experience
-        this.experience = this.list[index];
+        // Project
+        this.project = this.list[index];
       }
 
       // Mode (delete)
       if (mode === "delete") {
         // Mode
-        this.modeTitle = "Borrar Experiencia";
+        this.modeTitle = "Borrar Proyecto";
         this.modeButton = "Borrar";
         this.modeCreate = false;
         this.modeUpdate = false;
         this.modeDelete = true;
 
-        // Experience
-        this.experience = this.list[index];
+        // Project
+        this.project = this.list[index];
       }
 
       // Form
-      this.formGroup.patchValue(this.experience);
+      this.formGroup.patchValue(this.project);
 
       if (this.modeDelete)
         this.formGroup.disable();
@@ -91,35 +96,35 @@ export class ExperienceComponent implements OnInit {
     });
 
     // Service (list)
-    this.experienceService.list().subscribe((data) => {
-      // Experiences
+    this.projectService.list().subscribe((data) => {
+      // Projects
       this.list = data;
     });
   }
 
   onCreate(): void {
-    // Experiencie
-    Object.assign(this.experience, this.formGroup.value);
+    // Project
+    Object.assign(this.project, this.formGroup.value);
 
     // Service (create)
-    this.experienceService.create(this.experience).subscribe((data) => {
+    this.projectService.create(this.project).subscribe((data) => {
       // Dialog
       AppComponent.dialogMessage(JSON.parse(`{"type": "create", "title": "${this.modeTitle}", "message": "¡Creación confirmada!"}`));
 
       // Service (list)
-      this.experienceService.list().subscribe((data) => {
-        // Experiences
+      this.projectService.list().subscribe((data) => {
+        // Projects
         this.list = data;
       });
     });
   }
 
   onUpdate(): void {
-    // Experience
-    Object.assign(this.experience, this.formGroup.value);
+    // Project
+    Object.assign(this.project, this.formGroup.value);
 
     // Service (update)
-    this.experienceService.update(this.experience).subscribe((data) => {
+    this.projectService.update(this.project).subscribe((data) => {
       // Dialog
       AppComponent.dialogMessage(JSON.parse(`{"type": "update", "title": "${this.modeTitle}", "message": "¡Actualización confirmada!"}`));
     });
@@ -127,13 +132,13 @@ export class ExperienceComponent implements OnInit {
 
   onDelete(): void {
     // Service (delete)
-    this.experienceService.delete(this.experience.id).subscribe((data) => {
+    this.projectService.delete(this.project.id).subscribe((data) => {
       // Dialog
       AppComponent.dialogMessage(JSON.parse(`{"type": "delete", "title": "${this.modeTitle}", "message": "¡Borrado confirmado!"}`));
 
       // Service (list)
-      this.experienceService.list().subscribe((data) => {
-        // Experiences
+      this.projectService.list().subscribe((data) => {
+        // Projects
         this.list = data;
       });
     });

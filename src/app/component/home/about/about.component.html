@@ -16,7 +16,7 @@
           <div class="mb-3">
             <label for="modalForm_User.description" class="form-label text-primary">Descripción</label>
             <textarea id="modalForm_User.description" formControlName="description" placeholder="Descripción..." class="form-control" aria-describedby="modalForm_User.descriptionHelp"></textarea>
-            <div id="modalForm_User.descriptionHelp" class="form-text">Ingresa una breve descripción (máximo 200 letras).</div>
+            <div id="modalForm_User.descriptionHelp" class="form-text">Ingresa una breve descripción (máximo 200 caracteres).</div>
           </div>
           <div class="mb-3">
             <label for="modalForm_User.web" class="form-label text-primary">Web</label>
@@ -61,12 +61,12 @@
     <div class="info">
       <h1>{{ user.name }}</h1>
       <p>{{ user.description }}</p>
-      <div class="pie">
+      <div class="mt-4 pie">
         <p><i class="bi bi-globe"></i>Web <a href="{{ user.web }}" target="_blank">{{ user.web }}</a></p>
         <p><i class="bi bi-envelope"></i>Email <a href="mail:{{ user.email }}">{{ user.email }}</a></p>
         <p><i class="bi bi-clock-history"></i>{{ user.version }}</p>
       </div>
-      <button *ngIf="isLogged" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_User"><i class="bi bi-pencil-fill"></i></button>
+      <button *ngIf="(authentication$ | async)?.isAuthenticated" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_User"><i class="bi bi-pencil-fill"></i></button>
     </div>
   </div>
 </div>

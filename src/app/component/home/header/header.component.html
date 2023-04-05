@@ -1,0 +1,43 @@
+<!-- Modal -->
+<div class="modal fade" id="modalForm_Authenticated" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="formLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-4 text-secondary" id="formLabel">Autenticación</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formGroup">
+          <div class="mb-3">
+            <label for="modalForm_Authenticated.username" class="form-label text-primary">Usuario</label>
+            <input id="modalForm_Authenticated.username" formControlName="username" type="text" autocomplete="off" class="form-control" aria-describedby="modalForm_Authenticated.usernameHelp">
+            <div id="modalForm_Authenticated.usernameHelp" class="form-text">Nombre de usuario (mínimo 4 caracteres).</div>
+          </div>
+          <div class="mb-3">
+            <label for="modalForm_Authenticated.password" class="form-label text-primary">Contraseña</label>
+            <input id="modalForm_Authenticated.password" formControlName="password" type="password" autocomplete="off" class="form-control" aria-describedby="modalForm_Authenticated.passwordHelp">
+            <div id="modalForm_Authenticated.passwordHelp" class="form-text">Contraseña segura (mínimo 6 caracteres).</div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="formGroup.invalid" type="button" class="btn btn-primary" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onSubmit()">Iniciar sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UI -->
+<div class="container-fluid">
+  <div class="container py-2 d-flex flex-column flex-wrap justify-content-evenly align-items-center align-self-center">
+    <img class="my-3 img-fluid" src="./assets/img/header/logo.png" alt="logo" />
+    <div class="my-3 d-flex flex-row flex-wrap justify-content-center gap-5">
+      <a href="https://www.facebook.com" target="_blank"><i class="bi bi-facebook"></i></a>
+      <a href="https://twitter.com" target="_blank"><i class="bi bi-twitter"></i></a>
+      <a href="https://www.instagram.com" target="_blank"><i class="bi bi-instagram"></i></a>
+      <a href="https://www.whatsapp.com" target="_blank"><i class="bi bi-whatsapp"></i></a>      
+      <p *ngIf="!(authentication$ | async)?.isAuthenticated" data-bs-target="#modalForm_Authenticated" data-bs-toggle="modal" (click)="onLogin()"><i class="bi bi-person-circle"></i></p>
+      <p *ngIf="(authentication$ | async)?.isAuthenticated" data-bs-target="#modalDialog" data-bs-toggle="modal" (click)="onLogout()"><i class="bi bi-person-circle bi-state-active"></i></p>
+    </div>
+  </div>
+</div>
