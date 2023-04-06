@@ -1,3 +1,9 @@
+.container {
+  background-color: #fff !important;
+  box-shadow: 0 2px 5px #ccc;
+  border-radius: 0.375rem;
+}
+
 .container h1 {
   text-shadow: 0 2px 5px #999;
   font-size: 3rem;
@@ -10,13 +16,13 @@
 .img-background {
   height: 150px;
   object-fit: cover;
-  border-radius: 0 0 16px 16px;
+  border-radius: 0 0 50% 50%;
   box-shadow: 0 5px 10px #666;
 }
 
 .img-perfil {
   position: absolute;
-  top: -75px;
+  top: -100px;
   left: 15px;
   width: 150px;
   height: 150px;
@@ -29,7 +35,7 @@
 
 .info {
   width: 100%;
-  padding: 100px 1rem 0 15px;
+  padding: 5rem 1rem 1.5rem 15px;
   position: relative;
 }
 
@@ -59,7 +65,7 @@
   }
 
   .info {
-    padding: 100px 1rem 0 20px;
+    padding: 5rem 1rem 1rem 20px;
   }
 }
 
@@ -69,12 +75,12 @@
   }
 
   .info {
-    padding: 100px 1rem 0 25px;
+    padding: 5rem 1rem 1rem 25px;
   }
 }
 
 @media (min-width: 992px) {
   .info {
-    padding: 2rem 1rem 0 200px;
+    padding: 3rem 1rem 1rem 200px;
   }
 }

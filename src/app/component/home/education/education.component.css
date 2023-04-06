@@ -1,11 +1,10 @@
 .container {
-    position: relative;
-    margin-top: 2rem;
-  }
-  
-  .container h1 .bi {  
-    padding-right: 1rem;
-  }
+  position: relative;
+}
+
+.container h1 .bi {
+  padding-right: 1rem;
+}
 
 .card {
   height: auto;

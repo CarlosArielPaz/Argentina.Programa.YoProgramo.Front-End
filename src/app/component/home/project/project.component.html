@@ -15,7 +15,7 @@
             </div>
             <div class="mb-3">
               <label for="modalForm_Project.description" class="form-label text-primary">Descripción del proyecto</label>
-              <textarea id="modalForm_Project.description" formControlName="description" placeholder="Descripción..." class="form-control" aria-describedby="modalForm_Project.descriptionHelp"></textarea>
+              <textarea id="modalForm_Project.description" formControlName="description" rows="5" placeholder="Descripción..." class="form-control" aria-describedby="modalForm_Project.descriptionHelp"></textarea>
               <div id="modalForm_Project.descriptionHelp" class="form-text">Descripción de las actividades realizadas en el proyecto.</div>
             </div>
             <div class="mb-3">
@@ -44,10 +44,10 @@
       </div>
     </div>
   </div>
-  
+
   <!-- UI -->
-  <div class="container px-sm-0">
-    <h1 class="collection-title"><i class="bi bi-bookmarks"></i>Proyectos</h1>
+  <div class="container mt-4 px-sm-0">
+    <h1 class="collection-title"><i class="bi bi-award"></i>Proyectos</h1>
     <button *ngIf="(authentication$ | async)?.isAuthenticated" type="button" class="btn btn-lg btn-primary btn-create" data-bs-toggle="modal" data-bs-target="#modalForm_Project" mode="create" index="0"><i class="bi bi-plus-lg"></i></button>
     <div class="mt-5 d-flex flex-colum flex-wrap">
       <div *ngFor="let project of list; index as index" class="card mb-4 w-100">

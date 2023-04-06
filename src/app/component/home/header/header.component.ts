@@ -30,11 +30,15 @@ export class HeaderComponent implements OnInit {
   onLogin(): void {
     // Form
     this.formGroup.setValue({ username: "", password: "" })
+
+        // Service
+        this.authenticationService.nextAuthenticationObservable = { isAuthenticated: true };
+        return;
   }
 
   onLogout(): void {
     // Dialog
-    AppComponent.dialogMessage(JSON.parse(`{ "type": "logout", "title": "Autenticación", "message": "¡Acceso cerrado!" }`));
+    AppComponent.dialogMessage(JSON.parse(`{ "type": "logout", "title": "Autenticación", "message": "¡Sesión cerrada!" }`));
 
     // Service
     this.authenticationService.nextAuthenticationObservable = { isAuthenticated: false };

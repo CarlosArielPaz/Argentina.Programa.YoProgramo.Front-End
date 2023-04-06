@@ -15,8 +15,8 @@
           </div>
           <div class="mb-3">
             <label for="modalForm_User.description" class="form-label text-primary">Descripción</label>
-            <textarea id="modalForm_User.description" formControlName="description" placeholder="Descripción..." class="form-control" aria-describedby="modalForm_User.descriptionHelp"></textarea>
-            <div id="modalForm_User.descriptionHelp" class="form-text">Ingresa una breve descripción (máximo 200 caracteres).</div>
+            <textarea id="modalForm_User.description" formControlName="description" rows="5" placeholder="Descripción..." class="form-control" aria-describedby="modalForm_User.descriptionHelp"></textarea>
+            <div id="modalForm_User.descriptionHelp" class="form-text">Ingresa una breve descripción (máximo 2000 caracteres).</div>
           </div>
           <div class="mb-3">
             <label for="modalForm_User.web" class="form-label text-primary">Web</label>
@@ -60,7 +60,7 @@
     <img class="img-fluid img-perfil" src="{{ user.imageProfile }}" alt="profile" />
     <div class="info">
       <h1>{{ user.name }}</h1>
-      <p>{{ user.description }}</p>
+      <p class="mt-4" [innerText]="user.description"></p>
       <div class="mt-4 pie">
         <p><i class="bi bi-globe"></i>Web <a href="{{ user.web }}" target="_blank">{{ user.web }}</a></p>
         <p><i class="bi bi-envelope"></i>Email <a href="mail:{{ user.email }}">{{ user.email }}</a></p>

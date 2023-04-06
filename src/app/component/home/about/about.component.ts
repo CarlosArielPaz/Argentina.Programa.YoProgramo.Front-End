@@ -26,7 +26,7 @@ export class AboutComponent implements OnInit {
     // Form
     this.formGroup = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.maxLength(255)]],
+      description: ['', [Validators.required, Validators.maxLength(2000)]],
       web: ['', [Validators.required, Validators.maxLength(255)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
       version: ['', [Validators.required, Validators.maxLength(50)]],
@@ -37,6 +37,8 @@ export class AboutComponent implements OnInit {
     // Service (find)
     this.userService.find().subscribe({
       next: (data) => {
+        console.log(data.description);
+        
         // User
         this.user = data;
 
