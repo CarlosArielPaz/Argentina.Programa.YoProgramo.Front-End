@@ -37,8 +37,6 @@ export class AboutComponent implements OnInit {
     // Service (find)
     this.userService.find().subscribe({
       next: (data) => {
-        console.log(data.description);
-        
         // User
         this.user = data;
 
