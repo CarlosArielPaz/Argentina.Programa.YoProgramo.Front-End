@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class AppComponent {
-  public static URL_BACKEND: string = 'http://192.168.10.100:8080';
-  //public static URL_BACKEND: string = 'https://argentina-programa-yoprogramo-back-end.onrender.com';
+  //public static URL_BACKEND: string = 'http://192.168.10.100:8080';
+  public static URL_BACKEND: string = 'https://argentina-programa-yoprogramo-back-end.onrender.com';
 
   public static dialogMessage(data: any) {
     const title: HTMLDivElement = <HTMLDivElement>document.getElementById('modalDialog_Title');
