@@ -31,9 +31,9 @@ export class HeaderComponent implements OnInit {
     // Form
     this.formGroup.setValue({ username: "", password: "" })
 
-        // Service
-        this.authenticationService.nextAuthenticationObservable = { isAuthenticated: true };
-        return;
+    // Service
+/*     this.authenticationService.nextAuthenticationObservable = { isAuthenticated: true };
+    return; */
   }
 
   onLogout(): void {

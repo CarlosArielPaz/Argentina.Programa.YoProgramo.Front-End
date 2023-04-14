@@ -54,33 +54,16 @@
 </div>
 
 <!-- UI -->
-<!-- <div class="container px-sm-0 d-flex flex-column">
-  <img class="img-fluid img-background" height="200" src="{{ user.imageBackground }}" alt="background" />
-  <div class="d-flex flex-column justify-content-start flex-lg-row panel">
-    <img class="img-fluid img-perfil" src="{{ user.imageProfile }}" alt="profile" />
-    <div class="info">
-      <h1>{{ user.name }}</h1>
-      <p class="mt-4" [innerText]="user.description"></p>
-      <div class="mt-4 pie">
-        <p><i class="bi bi-globe"></i>Web <a href="{{ user.web }}" target="_blank">{{ user.web }}</a></p>
-        <p><i class="bi bi-envelope"></i>Email <a href="mail:{{ user.email }}">{{ user.email }}</a></p>
-        <p><i class="bi bi-clock-history"></i>{{ user.version }}</p>
-      </div>
-      <button *ngIf="(authentication$ | async)?.isAuthenticated" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_User"><i class="bi bi-pencil-fill"></i></button>
-    </div>
-  </div>
-</div> -->
-
-<!-- UI -->
-<div class="container mt-5 px-sm-0">
-  <img class="img-fluid img-background" height="200" src="{{ user.imageBackground }}" alt="background" />
+<div class="container px-sm-0">
+  <button *ngIf="(authentication$ | async)?.isAuthenticated" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_User"><i class="bi bi-pencil-fill"></i></button>
   <div class="mt-5 d-flex flex-colum flex-wrap">
     <div class="card mb-4 w-100">
+      <img class="img-fluid img-background" src="{{ user.imageBackground }}" alt="background" />
       <div class="row g-0">
         <div class="col-md-4">
           <img class="img-fluid img-perfil" src="{{ user.imageProfile }}" alt="profile" />
         </div>
-        <div class="col-md-8 px-4 py-2">
+        <div class="col-md-12 px-2 py-2 px-sm-4">
           <div class="card-body">
             <h1>{{ user.name }}</h1>
             <p class="mt-4" [innerText]="user.description"></p>
@@ -89,7 +72,6 @@
               <p><i class="bi bi-envelope"></i>Email <a href="mail:{{ user.email }}">{{ user.email }}</a></p>
               <p><i class="bi bi-clock-history"></i>{{ user.version }}</p>
             </div>
-            <button *ngIf="(authentication$ | async)?.isAuthenticated" type="button" class="btn btn-lg btn-primary btn-edit" data-bs-toggle="modal" data-bs-target="#modalForm_User"><i class="bi bi-pencil-fill"></i></button>
           </div>
         </div>
       </div>
